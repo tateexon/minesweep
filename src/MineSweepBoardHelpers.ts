@@ -22,6 +22,8 @@ export class MineSweepBoardHelpers {
      * @returns {BombLocation} The generated bomb location
      */
     public GenerateBombLocation(rowCount: number, columnCount: number): BombLocation {
+        this.validateInput(1, rowCount, columnCount);
+
         return {
             x: this.GetRandomNumberBetweenMinAndMaxInclusive(0, rowCount - 1),
             y: this.GetRandomNumberBetweenMinAndMaxInclusive(0, columnCount - 1),
@@ -30,20 +32,16 @@ export class MineSweepBoardHelpers {
 
     /**
      * Generate the wanted number of bomb locations
-     * @param {number} count The number of bombs to generate
+     * @param {number} bombCount The number of bombs to generate
      * @param {number} rowCount The board row size
      * @param {number} columnCount The board column size
      * @returns {BombLocation[]} The array of bomb locations
      */
-    public GenerateBombLocations(count: number, rowCount: number, columnCount: number): BombLocation[] {
+    public GenerateBombLocations(bombCount: number, rowCount: number, columnCount: number): BombLocation[] {
+        this.validateInput(bombCount, rowCount, columnCount);
+
         const bombLocations: BombLocation[] = [];
-        if (count <= 0) {
-            throw new Error("bomb count must be greater than 0");
-        }
-        if (count === rowCount * columnCount) {
-            throw new Error("bombs must be fewer than all board spaces");
-        }
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < bombCount; i++) {
             let location: BombLocation = this.GenerateBombLocation(rowCount, columnCount);
             while (bombLocations.some(e => e.x === location.x && e.y === location.y)) {
                 location = this.GenerateBombLocation(rowCount, columnCount);
@@ -60,6 +58,9 @@ export class MineSweepBoardHelpers {
      * @returns {number[][]} The 2d number array of the wanted size all initialized to emtpy spaces
      */
     public InitializeEmptyBoard(rowCount: number, columnCount: number): number[][] {
+        this.validateInput(1, rowCount, columnCount);
+
+        // create empty board by looping through all possible row/columns
         const board: number[][] = [];
         for (let x = 0; x < rowCount; x++) {
             board.push([]);
@@ -157,6 +158,9 @@ export class MineSweepBoardHelpers {
      * @returns {number[][]} The 2d number array with bombs and numbers populated
      */
     public GenerateBoard(bombCount: number, rowCount: number, columnCount: number): number[][] {
+        // validate input
+        this.validateInput(bombCount, rowCount, columnCount);
+
         // initialize board
         let board: number[][] = this.InitializeEmptyBoard(rowCount, columnCount);
 
@@ -166,6 +170,23 @@ export class MineSweepBoardHelpers {
         // place bombs and update the numbers around them
         board = this.PlaceBombs(bombLocations, board);
         return board;
+    }
+
+    // validate all the inputs are whole numbers greater than 0
+    private validateInput(bombCount: number, rowCount: number, columnCount: number): void {
+        if (!Number.isInteger(bombCount) || bombCount <= 0) {
+            throw new Error("bomb count must a whole number greater than 0");
+        }
+        if (!Number.isInteger(rowCount) || rowCount <= 0) {
+            throw new Error("row count must a whole number greater than 0");
+        }
+        if (!Number.isInteger(columnCount) || columnCount <= 0) {
+            throw new Error("column count must a whole number greater than 0");
+        }
+        const totalBoardSpaces: number = rowCount * columnCount;
+        if (totalBoardSpaces <= bombCount) {
+            throw new Error("There must be more than a single space on the board and more spaces than bombs on the board");
+        }
     }
 }
 

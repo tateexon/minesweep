@@ -38,10 +38,11 @@ describe("Tests for the Board object @unit", function (): void {
     });
     it("verifies we can initialize an empty board", async function (): Promise<void> {
         const board: MineSweepBoardHelpers = new MineSweepBoardHelpers();
-        const value = board.InitializeEmptyBoard(1, 1);
+        const value = board.InitializeEmptyBoard(1, 2);
         expect(value.length).to.eq(1, "should only have 1 row");
-        expect(value[0].length).to.eq(1, "should only have 1 column");
+        expect(value[0].length).to.eq(2, "should only have 2 columns");
         expect(value[0][0]).to.eq(EMPTY, "board entry should b empty which is 0");
+        expect(value[0][1]).to.eq(EMPTY, "board entry should b empty which is 0");
     });
     it("verifies we can set values around a bomb on all sides", async function (): Promise<void> {
         const board: MineSweepBoardHelpers = new MineSweepBoardHelpers();
@@ -149,5 +150,36 @@ describe("Tests for the Board object @unit", function (): void {
         expect(testBoard[0][1]).to.eq(1, "should be 1 here");
         expect(testBoard[1][0]).to.eq(1, "should be 1 here");
         expect(testBoard[1][1]).to.eq(BOMB, "should a bomb");
+    });
+
+    it("should throw an error if invalid parameters are input for bombCount, rowCount, or columnCount", async function (): Promise<void> {
+        let errorFound: boolean = false;
+        const board: MineSweepBoardHelpers = new MineSweepBoardHelpers();
+        try {
+            board.GenerateBoard(1.1, 2, 2);
+            errorFound = true;
+        } catch (e) {}
+        expect(errorFound).to.eq(false, "did not throw an expected error when invalid bombCount was input");
+
+        try {
+            board.GenerateBoard(1, -2, 2);
+            errorFound = true;
+        } catch (e) {}
+        expect(errorFound).to.eq(false, "did not throw an expected error when invalid rowCount was input");
+
+        try {
+            board.GenerateBoard(1, 2, 2.2);
+            errorFound = true;
+        } catch (e) {}
+        expect(errorFound).to.eq(false, "did not throw an expected error when invalid columnCount was input");
+
+        try {
+            board.GenerateBoard(4, 2, 2);
+            errorFound = true;
+        } catch (e) {}
+        expect(errorFound).to.eq(
+            false,
+            "did not throw an expected error when total number of bombs was equal to or greater than the total number of board spaces",
+        );
     });
 });
