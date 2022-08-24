@@ -1,0 +1,10 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "only-arrow-functions": false,
+        "no-console": false,
+        "no-trailing-whitespace": false,
+        "typedef": [true, "call-signature", "property-declaration", "parameter"],
+        "radix": false
+    }
+}

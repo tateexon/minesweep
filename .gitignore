@@ -1,0 +1,6 @@
+test-results/
+node_modules/
+dist/
+run.sh
+.vscode
+.nyc_output

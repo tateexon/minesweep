@@ -1,0 +1,30 @@
+{
+    "name": "minesweep",
+    "version": "1.0.0",
+    "description": "minesweep helpers",
+    "homepage": "https://github.com/tateexon/minesweep",
+    "dependencies": {
+        "@types/chai": "^4.2.18",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "15.12.2",
+        "@types/sinon": "^10.0.13",
+        "chai": "^4.3.4",
+        "mocha": "^9.0.0",
+        "mochawesome": "^6.2.2",
+        "nyc": "^15.1.0",
+        "sinon": "^14.0.0",
+        "ts-node": "^10.0.0",
+        "tslint": "^6.1.3",
+        "typescript": "^4.3.2"
+    },
+    "scripts": {
+        "build": "tsc",
+        "lint": "tslint --project ./tsconfig.json",
+        "test": "nyc --reporter=text mocha -r ts-node/register tests/*.spec.ts --reporter mochawesome --reporter-options reportDir=test-results --grep @unit --timeout 120000 --exit"
+    },
+    "author": "Tate Exon",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tateexon/minesweep.git"
+    }
+}
