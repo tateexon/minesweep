@@ -153,6 +153,7 @@ describe("Tests for the Board object @unit", function (): void {
     });
 
     it("should throw an error if invalid parameters are input for bombCount, rowCount, or columnCount", async function (): Promise<void> {
+        /* tslint:disable no-empty */
         let errorFound: boolean = false;
         const board: MineSweepBoardHelpers = new MineSweepBoardHelpers();
         try {
@@ -181,5 +182,6 @@ describe("Tests for the Board object @unit", function (): void {
             false,
             "did not throw an expected error when total number of bombs was equal to or greater than the total number of board spaces",
         );
+        /* tslint:enable no-empty */
     });
 });
